@@ -1,0 +1,34 @@
+@use "variables" as vars;
+@use "mixins";
+
+.display {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr calc(1fr / 1.618);
+  gap: 8px;
+  padding: vars.$padding;
+  font-weight: 800;
+
+  .minute,
+  .seconds {
+    @include mixins.flex;
+    border-radius: 16px;
+    font-size: 144px;
+    background-color: change-color(vars.$secondary-color, $lightness: 19%);
+    box-shadow: 0px 2px 8px -2px change-color(vars.$secondary-color, $lightness:
+          10%);
+  }
+
+  .seconds {
+    font-size: calc(89px);
+  }
+
+  .timer-info {
+    @include mixins.flex($direction: column);
+  }
+
+  p {
+    text-align: center;
+    color: darken(vars.$primary-color, 10%);
+  }
+}

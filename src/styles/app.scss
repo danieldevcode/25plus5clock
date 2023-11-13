@@ -1,1 +1,11 @@
 @use "base";
+
+.app {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content min-content;
+  align-content: center;
+
+  width: 100%;
+  height: 100%;
+}

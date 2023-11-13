@@ -1,5 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;1,800&display=swap");
 
-$font: 'Noto Sans', sans-serif;
+$font: "Noto Sans", sans-serif;
 $primary-color: hsla(0, 0%, 96%, 1);
+// $secondary-color: hsla(0, 2%, 19%, 1);
 $secondary-color: hsla(220, 15%, 20%, 1);
+$bg-color: change-color($secondary-color, $lightness: 22%);
+$button-color: change-color($primary-color, $lightness: 85%);
+$padding: 24px;

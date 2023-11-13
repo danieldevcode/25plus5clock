@@ -1,0 +1,16 @@
+@use "variables" as vars;
+@use "mixins";
+
+.button {
+  width: 72px;
+  height: 72px;
+  border-radius: 36px;
+  color: vars.$bg-color;
+  background-color: vars.$button-color;
+  box-shadow: 0 2px 8px -2px change-color(vars.$secondary-color, $lightness: 50%);
+
+  @include mixins.interactiveButton(
+    darken(vars.$bg-color, 10%),
+    darken(vars.$primary-color, 20%)
+  );
+}
