@@ -1,20 +1,32 @@
 import "../styles/controls.scss";
 import Stepper from "./Stepper";
 import Button from "./Button";
-import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faRotate, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 
-function Controls({ session, setSession, isRunning, setIsRunning }) {
+function Controls({
+  session,
+  setSession,
+  isRunning,
+  toggleIsRunning,
+  resetTimer,
+}) {
   function setValue({ key, increment }) {
     setSession((prevSession) => {
-      return {
-        ...prevSession,
-        [key]: increment ? prevSession[key] + 1 : prevSession[key] - 1,
-      };
+      // Increment
+      if (increment && prevSession[key] + 1 <= 60)
+        return {
+          ...prevSession,
+          [key]: prevSession[key] + 1,
+        };
+      // Decrement
+      else if (!increment && prevSession[key] - 1 > 0)
+        return {
+          ...prevSession,
+          [key]: prevSession[key] - 1,
+        };
+      // Can't change
+      else return prevSession;
     });
-  }
-
-  function toggleIsRunning() {
-    setIsRunning((prev) => !prev);
   }
 
   return (
@@ -31,11 +43,20 @@ function Controls({ session, setSession, isRunning, setIsRunning }) {
         setValue={setValue}
         disable={isRunning}
       />
-      <Button
-        id="start_stop"
-        icon={isRunning ? faPause : faPlay}
-        onClick={toggleIsRunning}
-      />
+      <div className="buttons">
+        <Button
+          id="reset"
+          className="reset"
+          icon={faRotate}
+          iconSize="lg"
+          onClick={resetTimer}
+        />
+        <Button
+          id="start_stop"
+          icon={isRunning ? faPause : faPlay}
+          onClick={toggleIsRunning}
+        />
+      </div>
     </div>
   );
 }

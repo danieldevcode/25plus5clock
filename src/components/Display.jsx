@@ -1,22 +1,25 @@
-import { useEffect, useState } from "react";
 import "../styles/display.scss";
 
-function Display({ session, isRunning }) {
-  // function formatTime(timer) {
-  //   const minutes = timer.getMinutes().toString().padStart(2, "0");
-  //   const seconds = timer.getSeconds().toString().padStart(2, "0");
-  //   return `${minutes}:${seconds}`;
-  // }
+function Display({ timer }) {
+  function formatTime(timer) {
+    const minutes = timer.getMinutes().toString().padStart(2, "0");
+    const seconds = timer.getSeconds().toString().padStart(2, "0");
+    return {
+      timer: `${minutes}:${seconds}`,
+      minutes,
+      seconds,
+    };
+  }
 
   return (
     <div className="display">
-      <div className="minute">{"2"}</div>
-      <div className="minute">{"5"}</div>
+      <div className="minute">{formatTime(timer).minutes[0]}</div>
+      <div className="minute">{formatTime(timer).minutes[1]}</div>
       <div className="timer-info">
         <p id="timer-label">Session timer</p>
-        <p id="time-left">{}</p>
+        <p id="time-left">{formatTime(timer).timer}</p>
       </div>
-      <div className="seconds">{"00"}</div>
+      <div className="seconds">{formatTime(timer).seconds}</div>
     </div>
   );
 }
