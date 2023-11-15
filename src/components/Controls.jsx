@@ -12,20 +12,10 @@ function Controls({
 }) {
   function setValue({ key, increment }) {
     setSession((prevSession) => {
-      // Increment
-      if (increment && prevSession[key] + 1 <= 60)
-        return {
-          ...prevSession,
-          [key]: prevSession[key] + 1,
-        };
-      // Decrement
-      else if (!increment && prevSession[key] - 1 > 0)
-        return {
-          ...prevSession,
-          [key]: prevSession[key] - 1,
-        };
-      // Can't change
-      else return prevSession;
+      return {
+        ...prevSession,
+        [key]: increment ? prevSession[key] + 1 : prevSession[key] - 1,
+      };
     });
   }
 
@@ -34,13 +24,19 @@ function Controls({
       <Stepper
         label="Break"
         value={session.break}
-        setValue={setValue}
+        min={1}
+        max={60}
+        incrementValue={() => setValue({ key: "break", increment: true })}
+        decrementValue={() => setValue({ key: "break", increment: false })}
         disable={isRunning}
       />
       <Stepper
         label="Session"
         value={session.session}
-        setValue={setValue}
+        min={1}
+        max={60}
+        incrementValue={() => setValue({ key: "session", increment: true })}
+        decrementValue={() => setValue({ key: "session", increment: false })}
         disable={isRunning}
       />
       <div className="buttons">

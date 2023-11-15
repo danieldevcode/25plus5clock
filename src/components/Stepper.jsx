@@ -2,8 +2,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import "../styles/stepper.scss";
 
-function Stepper({ value, label, setValue, disable }) {
+function Stepper({ label, value, min, max, incrementValue, decrementValue, disable }) {
   const newLabel = label.toLowerCase();
+
+  function handleStepper({ increment }) {
+    if (disable) return;
+    else if (increment && value < max) incrementValue();
+    else if (!increment && value > min) decrementValue();
+  }
 
   return (
     <div className="stepper">
@@ -11,9 +17,7 @@ function Stepper({ value, label, setValue, disable }) {
         <button
           id={`${newLabel}-decrement`}
           className="icon"
-          onClick={
-            disable ? null : () => setValue({ key: newLabel, increment: false })
-          }
+          onClick={() => handleStepper({ increment: false })}
         >
           <FontAwesomeIcon icon={faMinus} />
         </button>
@@ -23,9 +27,7 @@ function Stepper({ value, label, setValue, disable }) {
         <button
           id={`${newLabel}-increment`}
           className="icon"
-          onClick={
-            disable ? null : () => setValue({ key: newLabel, increment: true })
-          }
+          onClick={() => handleStepper({ increment: true })}
         >
           <FontAwesomeIcon icon={faPlus} />
         </button>
