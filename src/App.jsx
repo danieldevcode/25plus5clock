@@ -9,13 +9,14 @@ function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [isSession, setIsSession] = useState(true);
   const [isBreak, setIsBreak] = useState(false);
-  const [timer, setTimer] = useState(newTimer(session.session));
+  const [timer, setTimer] = useState({ minutes: 0, seconds: 0 });
+  const timerRef = useRef({});
   const labelRef = useRef(null);
   const audioRef = useRef(null);
 
   useEffect(
     function initializeTimer() {
-      setTimer(newTimer(session.session));
+      updateTimer(session.session);
     },
     [session]
   );
@@ -23,55 +24,50 @@ function App() {
   useEffect(
     function handleTimer() {
       if (isRunning && (isSession || isBreak)) {
-        const time = new Date();
-        time.setMinutes(time.getMinutes() + timer.getMinutes());
-        time.setSeconds(time.getSeconds() + timer.getSeconds() + 1);
-        time.setMilliseconds(time.getMilliseconds() + timer.getMilliseconds());
-
-        const timerInterval = setInterval(() => runTimer(time.getTime()), 1000);
+        const timerInterval = setInterval(() => runTimer(timerInterval), 1000);
         return () => clearInterval(timerInterval);
       }
     },
-    [isRunning, isBreak]
+    [isRunning, isBreak, isSession]
   );
 
-  function runTimer(durationTime) {
-    const currentTime = new Date().getTime();
-    const difference = durationTime - currentTime;
-    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-    console.log(minutes, seconds);
+  function runTimer(timerInterval) {
+    const { minutes: timerMin, seconds: timerSecs } = timerRef.current;
+    const duration = timerMin * 60 + timerSecs; // timer(m) * (1m = 60s) + timer(s) = duration(s)
+    const remaining = duration - 1; // duration(s) - (1s)
+    const minutes = Math.floor(remaining / 60); // (m)
+    const seconds = remaining % 60; // (s)
+    updateTimer(minutes, seconds);
 
     if (minutes == 0 && seconds == 0) {
-      audioRef.current.play()
-      if (isSession) {
-        console.log("Toggle to Break");
-        setIsSession(false);
-        setIsBreak(true);
-        setTimer(() => newTimer(session.break));
-        labelRef.current.textContent = "Break";
-      } else if (isBreak) {
-        console.log("Toggle to Session");
-        setIsSession(true);
-        setIsBreak(false);
-        setTimer(() => newTimer(session.session));
-        labelRef.current.textContent = "Session";
-      }
-    } else setTimer(() => newTimer(minutes, seconds));
+      clearInterval(timerInterval);
+      audioRef.current.play();
+      setTimeout(() => {
+        if (isSession) toggleTimer(session.break);
+        else if (isBreak) toggleTimer(session.session);
+      }, 1000);
+    }
   }
 
-  function newTimer(minutes = 0, seconds = 0, milliseconds = 0) {
-    const newTimer = new Date();
-    newTimer.setMinutes(minutes, seconds, milliseconds);
-    return newTimer;
+  function updateTimer(minutes = 0, seconds = 0) {
+    const time = { minutes, seconds };
+    setTimer(time);
+    timerRef.current = time;
+  }
+
+  function toggleTimer(time) {
+    labelRef.current.textContent = isSession ? "Break" : "Session";
+    setIsSession((prev) => !prev);
+    setIsBreak((prev) => !prev);
+    updateTimer(time);
   }
 
   function resetTimer() {
-    audioRef.current.pause()
-    audioRef.current.fastSeek(0)
-    labelRef.current.textContent= "Session"
+    audioRef.current.pause();
+    audioRef.current.fastSeek(0);
+    labelRef.current.textContent = "Session";
     setIsRunning(false);
-    setTimer(newTimer(session.session));
+    updateTimer(session.session);
     setSession(defaultSession);
   }
 

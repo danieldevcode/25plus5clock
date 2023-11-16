@@ -2,8 +2,8 @@ import "../styles/display.scss";
 
 function Display({ timer, labelRef }) {
   function formatTime(timer) {
-    const minutes = timer.getMinutes().toString().padStart(2, "0");
-    const seconds = timer.getSeconds().toString().padStart(2, "0");
+    const minutes = timer.minutes.toString().padStart(2, "0");
+    const seconds = timer.seconds.toString().padStart(2, "0");
     return {
       timer: `${minutes}:${seconds}`,
       minutes,
