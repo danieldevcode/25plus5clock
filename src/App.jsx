@@ -8,7 +8,6 @@ function App() {
   const [session, setSession] = useState(defaultSession);
   const [isRunning, setIsRunning] = useState(false);
   const [isSession, setIsSession] = useState(true);
-  const [isBreak, setIsBreak] = useState(false);
   const [timer, setTimer] = useState({ minutes: 0, seconds: 0 });
   const timerRef = useRef({});
   const labelRef = useRef(null);
@@ -23,12 +22,12 @@ function App() {
 
   useEffect(
     function handleTimer() {
-      if (isRunning && (isSession || isBreak)) {
+      if (isRunning) {
         const timerInterval = setInterval(() => runTimer(timerInterval), 1000);
         return () => clearInterval(timerInterval);
       }
     },
-    [isRunning, isBreak, isSession]
+    [isRunning, isSession]
   );
 
   function runTimer(timerInterval) {
@@ -40,12 +39,12 @@ function App() {
     updateTimer(minutes, seconds);
 
     if (minutes == 0 && seconds == 0) {
-      clearInterval(timerInterval);
+      audioRef.current.load();
       audioRef.current.play();
       setTimeout(() => {
-        if (isSession) toggleTimer(session.break);
-        else if (isBreak) toggleTimer(session.session);
+        isSession ? toggleTimer(session.break) : toggleTimer(session.session);
       }, 1000);
+      clearInterval(timerInterval);
     }
   }
 
@@ -56,15 +55,14 @@ function App() {
   }
 
   function toggleTimer(time) {
-    labelRef.current.textContent = isSession ? "Break" : "Session";
+    const label = labelRef.current;
+    label.textContent = label.textContent == "Session" ? "Break" : "Session";
     setIsSession((prev) => !prev);
-    setIsBreak((prev) => !prev);
     updateTimer(time);
   }
 
   function resetTimer() {
-    audioRef.current.pause();
-    audioRef.current.fastSeek(0);
+    audioRef.current.load();
     labelRef.current.textContent = "Session";
     setIsRunning(false);
     updateTimer(session.session);
@@ -85,7 +83,7 @@ function App() {
         toggleIsRunning={toggleIsRunning}
         resetTimer={resetTimer}
       />
-      <audio id="beep" ref={audioRef} src="/beep.wav"></audio>
+      <audio id="beep" ref={audioRef} src="/beep.wav" preload="auto"></audio>
     </div>
   );
 }
