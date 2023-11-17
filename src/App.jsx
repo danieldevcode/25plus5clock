@@ -2,6 +2,7 @@ import "./styles/app.scss";
 import Display from "./components/Display";
 import Controls from "./components/Controls";
 import { useState, useEffect, useRef } from "react";
+import beep from "/beep.wav";
 
 function App() {
   const defaultSession = { break: 5, session: 25 };
@@ -96,7 +97,7 @@ function App() {
         toggleIsRunning={toggleIsRunning}
         resetTimer={resetTimer}
       />
-      <audio id="beep" ref={audioRef} src="/beep.wav" preload="auto"></audio>
+      <audio id="beep" ref={audioRef} src={beep} preload="auto"></audio>
     </div>
   );
 }
