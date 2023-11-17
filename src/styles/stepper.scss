@@ -2,33 +2,45 @@
 @use "variables" as vars;
 
 .stepper {
-  width: min-content;
-
+  width: 124px;
   .control {
-    @include mixins.flex($gap: 16px);
+    @include mixins.flex($justify: space-between);
+    width: 100%;
+    margin: 8px 0 4px 0;
 
     .value {
-      font-size: 40px;
+      font-size: 1.5rem;
     }
 
     .icon {
       @include mixins.flex;
       width: 40px;
       height: 40px;
-      font-size: 20px;
+      font-size: 1.5rem;
       border-radius: 20px;
-      color: vars.$primary-color;
+      color: vars.$text-color;
       background: none;
       border: none;
 
       @include mixins.interactiveButton(
-        darken(vars.$primary-color, 20%),
-        vars.$secondary-color
+        darken(vars.$text-color, 50%),
+        darken(vars.$background-color, 3%)
       );
     }
   }
 
-  .label {
+  .label,
+  .units {
     text-align: center;
+  }
+
+  .label {
+    font-size: 1rem;
+    letter-spacing: 4px;
+  }
+
+  .units {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
   }
 }

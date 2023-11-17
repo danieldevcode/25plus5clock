@@ -7,7 +7,7 @@
 }
 
 @mixin interactiveButton($color: null, $bg-color: null) {
-  transition: background-color, color 0.15s;
+  transition: background-color, color 0.3s;
 
   @media (hover: hover) {
     &:hover {

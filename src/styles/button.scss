@@ -5,13 +5,13 @@
   width: 72px;
   height: 72px;
   border-radius: 36px;
-  color: vars.$bg-color;
+  color: vars.$background-color;
   background-color: vars.$button-color;
-  box-shadow: 0 2px 8px -2px change-color(vars.$secondary-color, $lightness: 50%);
+  box-shadow: 0 2px 8px -2px darken(vars.$button-color, 80%);
 
   @include mixins.interactiveButton(
-    darken(vars.$bg-color, 10%),
-    darken(vars.$primary-color, 20%)
+    darken(vars.$background-color, 10%),
+    darken(vars.$button-color, 10%)
   );
 }
 

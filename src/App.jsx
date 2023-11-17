@@ -44,7 +44,10 @@ function App() {
       setTimeout(() => {
         isSession ? toggleTimer(session.break) : toggleTimer(session.session);
       }, 1000);
+      endingAnimation(false);
       clearInterval(timerInterval);
+    } else if (minutes == 0 && seconds <= 3) {
+      endingAnimation(true);
     }
   }
 
@@ -71,6 +74,16 @@ function App() {
 
   function toggleIsRunning() {
     setIsRunning((prev) => !prev);
+  }
+
+  function endingAnimation(add) {
+    document
+      .querySelectorAll(".number")
+      .forEach((number) =>
+        add
+          ? number.classList.add("time-ending")
+          : number.classList.remove("time-ending")
+      );
   }
 
   return (

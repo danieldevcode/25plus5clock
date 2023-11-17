@@ -2,33 +2,59 @@
 @use "mixins";
 
 .display {
+  // Parent Grid
+  justify-self: center;
+  //Grid
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr calc(1fr / 1.618);
+  grid-template-rows: min-content 1fr calc(1fr / 1.618);
   gap: 8px;
+  width: min-content;
   padding: vars.$padding;
   font-weight: 800;
 
-  .minute,
-  .seconds {
+  .card {
     @include mixins.flex;
+    width: 152px;
     border-radius: 16px;
-    font-size: 144px;
-    background-color: change-color(vars.$secondary-color, $lightness: 19%);
-    box-shadow: 0px 2px 8px -2px change-color(vars.$secondary-color, $lightness:
-          10%);
+    background: vars.$card-background;
+    box-shadow: 0px 2px 8px -2px vars.$card-shadow;
+
+    .number {
+      font-size: 9em;
+      font-weight: 800;
+    }
   }
 
-  .seconds {
-    font-size: calc(89px);
+  .colon {
+    display: none;
+    font-size: 9em;
   }
 
   .timer-info {
-    @include mixins.flex($direction: column);
-  }
-
-  p {
+    @include mixins.flex($direction: row, $gap: 8px);
+    grid-column: 1 / 3;
     text-align: center;
-    color: darken(vars.$primary-color, 10%);
+    color: vars.$text-color;
+    letter-spacing: 4px;
+  }
+}
+
+.time-ending {
+  animation-name: halfOpacity;
+  animation-duration: 1s;
+  animation-iteration-count: 3;
+  animation-timing-function: linear;
+}
+
+@keyframes halfOpacity {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
   }
 }

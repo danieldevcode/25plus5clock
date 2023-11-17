@@ -3,13 +3,7 @@ import Stepper from "./Stepper";
 import Button from "./Button";
 import { faRotate, faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
 
-function Controls({
-  session,
-  setSession,
-  isRunning,
-  toggleIsRunning,
-  resetTimer,
-}) {
+function Controls({ session, setSession, isRunning, toggleIsRunning, resetTimer, }) {
   function setValue({ key, increment }) {
     setSession((prevSession) => {
       return {

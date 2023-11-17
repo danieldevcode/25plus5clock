@@ -1,0 +1,30 @@
+@media screen and (min-width: 768px) {
+  .app {
+    .display {
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(2, min-content);
+      gap: 16px;
+
+      .timer-info {
+        grid-row: 1;
+        grid-column: 1 / 6;
+        align-self: start;
+        justify-self: start;
+      }
+
+      .colon {
+        display: block;
+      }
+    }
+
+    .controls {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 1fr;
+        max-width: 600px;
+        .buttons {
+            grid-row: 1;
+            grid-column: 2 / 3;
+        }
+    }
+  }
+}

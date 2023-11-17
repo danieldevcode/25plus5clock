@@ -1,5 +1,6 @@
 @use "variables" as vars;
 @use "mixins";
+@use "mediaquery";
 
 :root {
   font-family: vars.$font;
@@ -21,8 +22,8 @@ body,
 
 body {
   @include mixins.flex;
-  color: vars.$primary-color;
-  background-color: vars.$bg-color;
+  color: vars.$text-color;
+  background-color: vars.$background-color;
 }
 
 button {
